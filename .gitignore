@@ -47,3 +47,10 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+<<<<<<< HEAD
+=======
+
+# USER
+.ipynb
+files/
+>>>>>>> 481a825 (ignore)
