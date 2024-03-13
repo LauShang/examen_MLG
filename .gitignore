@@ -51,6 +51,6 @@ rsconnect/
 =======
 
 # USER
-.ipynb
+*.ipynb
 files/
 >>>>>>> 481a825 (ignore)
