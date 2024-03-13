@@ -1,0 +1,91 @@
+---
+title: "Parcial 1"
+author: "Lauro Reyes 214532"
+date: "2024-03-17"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r,echo=FALSE,message=False}
+library(dplyr)
+library(cmdstanr)
+```
+
+# Ejercicio 1
+
+Sea θ la tasa de créditos hipotecarios otorgados por un banco en Argentina. Durante el 2023 la tasa promedio fue de 60 % y la desviación estándar de la tasa fue de 0.04. En lo que va del año 2024 se han solicitado 100 créditos, de los cuales se han otorgado únicamente 50.
+
+a.  Usando la información del año pasado, encuentra la distribución beta que mejor describe el conocimiento inicial.
+
+```{r}
+# función a optimizar
+cost_function <- function(vars, b1, b2) {
+  alpha <- vars[1]
+  beta <- vars[2]
+  
+  eq1 <- alpha / (alpha + beta) - b1
+  eq2 <- (alpha * beta) / ((alpha + beta)^2 * (alpha + beta + 1)) - b2
+
+  cost <- sum(eq1^2, eq2^2)
+  
+  return(cost)
+}
+
+mean_2023 <- 0.6
+var_2023 <- 0.04^2
+# Estimación inicial
+init_guess <- c(1, 1)
+beta_estimate <- optim(par = init_guess, fn = cost_function, b1 = mean_2023, b2 = var_2023)
+x <- seq(0, 1, length.out = 100)
+plot(x, dbeta(x, beta_estimate$par[1], beta_estimate$par[2]), 
+     type = "l", xlab = "", ylab = "", 
+     main = sprintf("Distribución Beta(%.1f, %0.1f)",beta_estimate$par[1],beta_estimate$par[2]))
+```
+
+b.  Usando la información del año pasado,encuentra la distribución normal transformada que mejor describa el conocimiento inicial.
+
+```{r}
+plot(x, dnorm(x, mean_2023,sqrt(var_2023)), 
+     type = "l", xlab = "", ylab = "", 
+     main = sprintf("Distribución Normal(%.1f, %0.2f)",mean_2023,sqrt(var_2023)))
+```
+
+c.  Determina la distribución inicial de referencia.
+
+```{r}
+y <- rep(1, 100)
+plot(x, y, type = "l", xlab = "", ylab = "", 
+     main = "Distribución no informativa")
+```
+
+d.  Usando los datos del año 2024 encuentra la distribución final para cada una de las distribuciones iniciales de los incisos (a) – (c).
+
+e.  Estima la tasa de créditos otorgados, usando las 3 distribuciones finales del inciso (d).
+
+*a)*
+```{r, warning=False}
+file_model <- "models/ejercicio_1_a.stan"
+mod <- cmdstan_model(file_model)
+# datos
+data_list <- list(
+  n_obs = 100,
+  n_success = 50,
+  alpha0 = beta_estimate$par[1],
+  beta0 = beta_estimate$par[2]
+)
+
+fit <- mod$sample(
+  data = data_list,
+  seed = 4,
+  chains = 4,
+  parallel_chains = 4,
+  iter_sampling = 2000,
+  iter_warmup = 1000
+)
+
+```
+
+
+
+f.  Estima el momio de otorgar un crédito, i.e., $\phi = \frac{\theta}{1 - \theta'}$ , usando las 3 distribuciones finales del inciso (d).
