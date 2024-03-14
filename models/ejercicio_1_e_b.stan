@@ -6,16 +6,12 @@ data {
 }
 
 parameters {
-  real theta_raw;  // Parámetro sin procesar que sigue una distribución normal
-}
-
-transformed parameters {
-  real<lower=0, upper=1> theta = inv_logit(theta_raw);  // Transformar theta_raw a (0, 1)
+  real theta;  // Parámetro sin procesar que sigue una distribución normal
 }
 
 model {
   // Distribución a priori para theta_raw
-  theta_raw ~ normal(mean0, sqrt(variance0));
+  theta ~ normal(mean0, sqrt(variance0));
   
   // Distribución de los datos observados
   n_success ~ binomial(n_obs, theta);

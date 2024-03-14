@@ -17,7 +17,7 @@ library(ggplot2)
 
 Sea θ la tasa de créditos hipotecarios otorgados por un banco en Argentina. Durante el 2023 la tasa promedio fue de 60 % y la desviación estándar de la tasa fue de 0.04. En lo que va del año 2024 se han solicitado 100 créditos, de los cuales se han otorgado únicamente 50.
 
-## a.  Usando la información del año pasado, encuentra la distribución beta que mejor describe el conocimiento inicial.
+## a. Usando la información del año pasado, encuentra la distribución beta que mejor describe el conocimiento inicial.
 
 ```{r}
 # función a optimizar
@@ -47,7 +47,7 @@ ggplot(data = data.frame(x = x, y = dbeta(x, beta_estimate$par[1], beta_estimate
   theme_minimal()
 ```
 
-## b.  Usando la información del año pasado,encuentra la distribución normal transformada que mejor describa el conocimiento inicial.
+## b. Usando la información del año pasado,encuentra la distribución normal transformada que mejor describa el conocimiento inicial.
 
 ```{r}
 ggplot(data = data.frame(x = x, y = dnorm(x, mean_2023,sqrt(var_2023))), 
@@ -57,7 +57,7 @@ ggplot(data = data.frame(x = x, y = dnorm(x, mean_2023,sqrt(var_2023))),
   theme_minimal()
 ```
 
-## c.  Determina la distribución inicial de referencia.
+## c. Determina la distribución inicial de referencia.
 
 ```{r}
 y <- rep(1, 100)
@@ -67,11 +67,12 @@ ggplot(data = data.frame(x = x, y = y), aes(x = x, y = y)) +
   theme_minimal()
 ```
 
-## d.  Usando los datos del año 2024 encuentra la distribución final para cada una de las distribuciones iniciales de los incisos (a) – (c).
+## d. Usando los datos del año 2024 encuentra la distribución final para cada una de las distribuciones iniciales de los incisos (a) – (c).
 
-## e.  Estima la tasa de créditos otorgados, usando las 3 distribuciones finales del inciso (d).
+## e. Estima la tasa de créditos otorgados, usando las 3 distribuciones finales del inciso (d).
 
-*a)*
+**a)**
+
 ```{r, warning=FALSE}
 file_model <- "models/ejercicio_1_e_a.stan"
 mod <- cmdstan_model(file_model)
@@ -83,7 +84,7 @@ data_list <- list(
   beta0 = beta_estimate$par[2]
 )
 
-fit <- mod$sample(
+fit_a <- mod$sample(
   data = data_list,
   seed = 4,
   chains = 4,
@@ -92,7 +93,7 @@ fit <- mod$sample(
   iter_warmup = 1000
 )
 # muestras
-theta_samples <- fit$draws(variables = "theta")
+theta_samples <- fit_a$draws(variables = "theta")
 theta_mean <- mean(theta_samples)
 theta_df <- data.frame(theta = as.vector(theta_samples))
 
@@ -105,8 +106,13 @@ ggplot(theta_df, aes(x = theta)) +
   theme_minimal()
 ```
 
+```{r}
+fit_a$summary()
+```
+
 *b)*
-```{r, warning=FALSE}
+
+```{r, warning=FALSE,message=FALSE}
 file_model <- "models/ejercicio_1_e_b.stan"
 mod <- cmdstan_model(file_model)
 # datos
@@ -117,7 +123,7 @@ data_list <- list(
   variance0 = var_2023
 )
 
-fit <- mod$sample(
+fit_b <- mod$sample(
   data = data_list,
   seed = 4,
   chains = 4,
@@ -125,11 +131,8 @@ fit <- mod$sample(
   iter_sampling = 2000,
   iter_warmup = 1000
 )
-```
-
-```{r}
 # muestras
-theta_samples <- fit$draws(variables = "theta")
+theta_samples <- fit_b$draws(variables = "theta")
 theta_mean <- mean(theta_samples)
 theta_df <- data.frame(theta = as.vector(theta_samples))
 
@@ -141,8 +144,65 @@ ggplot(theta_df, aes(x = theta)) +
        x = "Tasa de Créditos Otorgados (theta)") +
   theme_minimal()
 ```
+
 ```{r}
-fit$summary()
+fit_b$summary()
 ```
 
-## f.  Estima el momio de otorgar un crédito, i.e., $\phi = \frac{\theta}{1 - \theta'}$ , usando las 3 distribuciones finales del inciso (d).
+**c)**
+
+```{r}
+file_model <- "models/ejercicio_1_e_c.stan"
+mod <- cmdstan_model(file_model)
+# datos
+data_list <- list(
+  n_obs = 100,
+  n_success = 50
+)
+
+fit_c <- mod$sample(
+  data = data_list,
+  seed = 4,
+  chains = 4,
+  parallel_chains = 4,
+  iter_sampling = 2000,
+  iter_warmup = 1000
+)
+# muestras
+theta_samples <- fit_c$draws(variables = "theta")
+theta_mean <- mean(theta_samples)
+theta_df <- data.frame(theta = as.vector(theta_samples))
+
+# Graficar la distribución de las muestras de theta
+ggplot(theta_df, aes(x = theta)) +
+  geom_histogram(aes(y = ..density..), bins = 20, fill = "skyblue", color = "black") +
+  geom_vline(xintercept = theta_mean, color = "red", linetype = "dashed", size = 1) +
+  labs(title = "Distribución Posterior con Distribución a priori Normal(0.6,0.0016)",
+       x = "Tasa de Créditos Otorgados (theta)") +
+  theme_minimal()
+
+fit_c$summary()
+```
+
+## f. Estima el momio de otorgar un crédito, i.e., $\phi = \frac{\theta}{1 - \theta'}$ , usando las 3 distribuciones finales del inciso (d).
+
+**a)**
+
+```{r}
+posterior_odds <- fit_a$draws(variables = "theta") / (1 - fit_a$draws(variables = "theta"))
+print(mean(posterior_odds))
+```
+
+**b)**
+
+```{r}
+posterior_odds <- fit_b$draws(variables = "theta") / (1 - fit_b$draws(variables = "theta"))
+print(mean(posterior_odds))
+```
+
+**c)**
+
+```{r}
+posterior_odds <- fit_c$draws(variables = "theta") / (1 - fit_c$draws(variables = "theta"))
+print(mean(posterior_odds))
+```
