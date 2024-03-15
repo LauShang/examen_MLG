@@ -53,4 +53,5 @@ rsconnect/
 # USER
 *.ipynb
 files/
+.DS_Store
 >>>>>>> 481a825 (ignore)
