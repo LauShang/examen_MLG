@@ -113,9 +113,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="ejercicio-1" class="level1">
 <h1>Ejercicio 1</h1>
 <p>Sea θ la tasa de créditos hipotecarios otorgados por un banco en Argentina. Durante el 2023 la tasa promedio fue de 60 % y la desviación estándar de la tasa fue de 0.04. En lo que va del año 2024 se han solicitado 100 créditos, de los cuales se han otorgado únicamente 50.</p>
-<ol type="a">
-<li>Usando la información del año pasado, encuentra la distribución beta que mejor describe el conocimiento inicial.</li>
-</ol>
+<section id="a." class="level2">
+<h2 class="anchored" data-anchor-id="a.">a.</h2>
+<p>Usando la información del año pasado, encuentra la distribución beta que mejor describe el conocimiento inicial.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># función a optimizar</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>cost_function <span class="ot">&lt;-</span> <span class="cf">function</span>(vars, b1, b2) {</span>
@@ -146,9 +146,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="lauro_reyes_parcial_1_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<ol start="2" type="a">
-<li>Usando la información del año pasado,encuentra la distribución normal transformada que mejor describa el conocimiento inicial.</li>
-</ol>
+</section>
+<section id="b." class="level2">
+<h2 class="anchored" data-anchor-id="b.">b.</h2>
+<p>Usando la información del año pasado,encuentra la distribución normal transformada que mejor describa el conocimiento inicial.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> <span class="fu">dnorm</span>(x, mean_2023,<span class="fu">sqrt</span>(var_2023))), </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> <span class="fu">dnorm</span>(x, mean_2023,<span class="fu">sqrt</span>(var_2023)))) <span class="sc">+</span></span>
@@ -159,9 +160,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="lauro_reyes_parcial_1_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<ol start="3" type="a">
-<li>Determina la distribución inicial de referencia.</li>
-</ol>
+</section>
+<section id="c." class="level2">
+<h2 class="anchored" data-anchor-id="c.">c.</h2>
+<p>Determina la distribución inicial de referencia.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">100</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
@@ -172,30 +174,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="lauro_reyes_parcial_1_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<ol start="4" type="a">
-<li><p>Usando los datos del año 2024 encuentra la distribución final para cada una de las distribuciones iniciales de los incisos (a) – (c).</p></li>
-<li><p>Estima la tasa de créditos otorgados, usando las 3 distribuciones finales del inciso (d).</p></li>
-</ol>
-<p><em>a)</em></p>
+</section>
+<section id="d." class="level2">
+<h2 class="anchored" data-anchor-id="d.">d.</h2>
+<p>Usando los datos del año 2024 encuentra la distribución final para cada una de las distribuciones iniciales de los incisos (a) – (c).</p>
+</section>
+<section id="e." class="level2">
+<h2 class="anchored" data-anchor-id="e.">e.</h2>
+<p>Estima la tasa de créditos otorgados, usando las 3 distribuciones finales del inciso (d).</p>
+<p><strong>a)</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>file_model <span class="ot">&lt;-</span> <span class="st">"models/ejercicio_1_e_a.stan"</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(file_model)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># datos</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_obs =</span> <span class="dv">100</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_success =</span> <span class="dv">50</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha0 =</span> beta_estimate<span class="sc">$</span>par[<span class="dv">1</span>],</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta0 =</span> beta_estimate<span class="sc">$</span>par[<span class="dv">2</span>]</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_list,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">4</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span><span class="er">/</span> ejercicio_1_e_a.stan</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>data {</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  int<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span><span class="sc">&gt;</span> n_obs;</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  int<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span><span class="sc">&gt;</span> n_success;</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  real<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span><span class="sc">&gt;</span> alpha0; </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  real<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span><span class="sc">&gt;</span> beta0; </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>parameters {</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  real<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span>, upper<span class="ot">=</span><span class="dv">1</span><span class="sc">&gt;</span> theta;</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>model {</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Distribución a priori</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  theta <span class="sc">~</span> <span class="fu">beta</span>(alpha0, beta0);</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Distribución de los datos observados</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  n_success <span class="sc">~</span> <span class="fu">binomial</span>(n_obs, theta);</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>file_model <span class="ot">&lt;-</span> <span class="st">"models/ejercicio_1_e_a.stan"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(file_model)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># datos</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_obs =</span> <span class="dv">100</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_success =</span> <span class="dv">50</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha0 =</span> beta_estimate<span class="sc">$</span>par[<span class="dv">1</span>],</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta0 =</span> beta_estimate<span class="sc">$</span>par[<span class="dv">2</span>]</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>fit_a <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_list,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">4</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Running MCMC with 4 parallel chains...
 
@@ -336,42 +363,279 @@ All 4 chains finished successfully.
 Mean chain execution time: 0.0 seconds.
 Total execution time: 0.3 seconds.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># muestras</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>theta_samples <span class="ot">&lt;-</span> fit<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"theta"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>theta_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(theta_samples)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>theta_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> <span class="fu">as.vector</span>(theta_samples))</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar la distribución de las muestras de theta</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(theta_df, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">bins =</span> <span class="dv">20</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> theta_mean, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución Posterior con Distribución a priori Beta(90,60)"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Tasa de Créditos Otorgados (theta)"</span>) <span class="sc">+</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># muestras</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>theta_samples <span class="ot">&lt;-</span> fit_a<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"theta"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>theta_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(theta_samples)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>theta_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> <span class="fu">as.vector</span>(theta_samples))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar la distribución de las muestras de theta</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(theta_df, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">bins =</span> <span class="dv">20</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> theta_mean, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución Posterior con Distribución Inicial Beta(90,60)"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Tasa de Créditos Otorgados (theta)"</span>) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lauro_reyes_parcial_1_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<p><img src="lauro_reyes_parcial_1_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p><em>b)</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>file_model <span class="ot">&lt;-</span> <span class="st">"models/ejercicio_1_e_b.stan"</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(file_model)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># datos</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_obs =</span> <span class="dv">100</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_success =</span> <span class="dv">50</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean0 =</span> mean_2023,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">variance0 =</span> var_2023</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_list,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">4</span>,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fit_a<span class="sc">$</span><span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 10
+  variable     mean   median     sd    mad       q5      q95  rhat ess_bulk
+  &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+1 lp__     -172.    -171.    0.718  0.304  -173.    -171.     1.00    3596.
+2 theta       0.560    0.561 0.0315 0.0310    0.508    0.612  1.00    2885.
+# ℹ 1 more variable: ess_tail &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p><strong>b)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span><span class="er">/</span> ejercicio_1_e_b.stan</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>data {</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  int<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span><span class="sc">&gt;</span> n_obs;</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  int<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span><span class="sc">&gt;</span> n_success;</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  real mean0;</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  real<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span><span class="sc">&gt;</span> variance0;</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>parameters {</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  real theta;</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>model {</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Distribución a priori</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  theta <span class="sc">~</span> <span class="fu">normal</span>(mean0, <span class="fu">sqrt</span>(variance0));</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Distribución de los datos observados</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  n_success <span class="sc">~</span> <span class="fu">binomial</span>(n_obs, theta);</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>file_model <span class="ot">&lt;-</span> <span class="st">"models/ejercicio_1_e_b.stan"</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(file_model)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># datos</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_obs =</span> <span class="dv">100</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_success =</span> <span class="dv">50</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean0 =</span> mean_2023,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">variance0 =</span> var_2023</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>fit_b <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_list,</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">4</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running MCMC with 4 parallel chains...
+
+Chain 1 Iteration:    1 / 3000 [  0%]  (Warmup) 
+Chain 1 Iteration:  100 / 3000 [  3%]  (Warmup) 
+Chain 1 Iteration:  200 / 3000 [  6%]  (Warmup) 
+Chain 1 Iteration:  300 / 3000 [ 10%]  (Warmup) 
+Chain 1 Iteration:  400 / 3000 [ 13%]  (Warmup) 
+Chain 1 Iteration:  500 / 3000 [ 16%]  (Warmup) 
+Chain 1 Iteration:  600 / 3000 [ 20%]  (Warmup) 
+Chain 1 Iteration:  700 / 3000 [ 23%]  (Warmup) 
+Chain 1 Iteration:  800 / 3000 [ 26%]  (Warmup) 
+Chain 1 Iteration:  900 / 3000 [ 30%]  (Warmup) 
+Chain 2 Iteration:    1 / 3000 [  0%]  (Warmup) 
+Chain 2 Iteration:  100 / 3000 [  3%]  (Warmup) 
+Chain 2 Iteration:  200 / 3000 [  6%]  (Warmup) 
+Chain 2 Iteration:  300 / 3000 [ 10%]  (Warmup) 
+Chain 2 Iteration:  400 / 3000 [ 13%]  (Warmup) 
+Chain 2 Iteration:  500 / 3000 [ 16%]  (Warmup) 
+Chain 2 Iteration:  600 / 3000 [ 20%]  (Warmup) 
+Chain 2 Iteration:  700 / 3000 [ 23%]  (Warmup) 
+Chain 2 Iteration:  800 / 3000 [ 26%]  (Warmup) 
+Chain 2 Iteration:  900 / 3000 [ 30%]  (Warmup) 
+Chain 3 Iteration:    1 / 3000 [  0%]  (Warmup) 
+Chain 3 Iteration:  100 / 3000 [  3%]  (Warmup) 
+Chain 3 Iteration:  200 / 3000 [  6%]  (Warmup) 
+Chain 3 Iteration:  300 / 3000 [ 10%]  (Warmup) 
+Chain 3 Iteration:  400 / 3000 [ 13%]  (Warmup) 
+Chain 3 Iteration:  500 / 3000 [ 16%]  (Warmup) 
+Chain 3 Iteration:  600 / 3000 [ 20%]  (Warmup) 
+Chain 3 Iteration:  700 / 3000 [ 23%]  (Warmup) 
+Chain 3 Iteration:  800 / 3000 [ 26%]  (Warmup) 
+Chain 3 Iteration:  900 / 3000 [ 30%]  (Warmup) 
+Chain 3 Iteration: 1000 / 3000 [ 33%]  (Warmup) 
+Chain 3 Iteration: 1001 / 3000 [ 33%]  (Sampling) 
+Chain 3 Iteration: 1100 / 3000 [ 36%]  (Sampling) 
+Chain 3 Iteration: 1200 / 3000 [ 40%]  (Sampling) 
+Chain 3 Iteration: 1300 / 3000 [ 43%]  (Sampling) 
+Chain 3 Iteration: 1400 / 3000 [ 46%]  (Sampling) 
+Chain 3 Iteration: 1500 / 3000 [ 50%]  (Sampling) 
+Chain 3 Iteration: 1600 / 3000 [ 53%]  (Sampling) 
+Chain 3 Iteration: 1700 / 3000 [ 56%]  (Sampling) 
+Chain 3 Iteration: 1800 / 3000 [ 60%]  (Sampling) 
+Chain 3 Iteration: 1900 / 3000 [ 63%]  (Sampling) 
+Chain 3 Iteration: 2000 / 3000 [ 66%]  (Sampling) 
+Chain 3 Iteration: 2100 / 3000 [ 70%]  (Sampling) 
+Chain 3 Iteration: 2200 / 3000 [ 73%]  (Sampling) 
+Chain 3 Iteration: 2300 / 3000 [ 76%]  (Sampling) 
+Chain 3 Iteration: 2400 / 3000 [ 80%]  (Sampling) 
+Chain 3 Iteration: 2500 / 3000 [ 83%]  (Sampling) 
+Chain 3 Iteration: 2600 / 3000 [ 86%]  (Sampling) 
+Chain 3 Iteration: 2700 / 3000 [ 90%]  (Sampling) 
+Chain 3 Iteration: 2800 / 3000 [ 93%]  (Sampling) 
+Chain 3 Iteration: 2900 / 3000 [ 96%]  (Sampling) 
+Chain 3 Iteration: 3000 / 3000 [100%]  (Sampling) 
+Chain 4 Iteration:    1 / 3000 [  0%]  (Warmup) 
+Chain 4 Iteration:  100 / 3000 [  3%]  (Warmup) 
+Chain 4 Iteration:  200 / 3000 [  6%]  (Warmup) 
+Chain 1 Iteration: 1000 / 3000 [ 33%]  (Warmup) 
+Chain 1 Iteration: 1001 / 3000 [ 33%]  (Sampling) 
+Chain 1 Iteration: 1100 / 3000 [ 36%]  (Sampling) 
+Chain 1 Iteration: 1200 / 3000 [ 40%]  (Sampling) 
+Chain 1 Iteration: 1300 / 3000 [ 43%]  (Sampling) 
+Chain 1 Iteration: 1400 / 3000 [ 46%]  (Sampling) 
+Chain 1 Iteration: 1500 / 3000 [ 50%]  (Sampling) 
+Chain 1 Iteration: 1600 / 3000 [ 53%]  (Sampling) 
+Chain 1 Iteration: 1700 / 3000 [ 56%]  (Sampling) 
+Chain 1 Iteration: 1800 / 3000 [ 60%]  (Sampling) 
+Chain 1 Iteration: 1900 / 3000 [ 63%]  (Sampling) 
+Chain 1 Iteration: 2000 / 3000 [ 66%]  (Sampling) 
+Chain 1 Iteration: 2100 / 3000 [ 70%]  (Sampling) 
+Chain 1 Iteration: 2200 / 3000 [ 73%]  (Sampling) 
+Chain 1 Iteration: 2300 / 3000 [ 76%]  (Sampling) 
+Chain 1 Iteration: 2400 / 3000 [ 80%]  (Sampling) 
+Chain 1 Iteration: 2500 / 3000 [ 83%]  (Sampling) 
+Chain 1 Iteration: 2600 / 3000 [ 86%]  (Sampling) 
+Chain 1 Iteration: 2700 / 3000 [ 90%]  (Sampling) 
+Chain 1 Iteration: 2800 / 3000 [ 93%]  (Sampling) 
+Chain 1 Iteration: 2900 / 3000 [ 96%]  (Sampling) 
+Chain 1 Iteration: 3000 / 3000 [100%]  (Sampling) 
+Chain 1 finished in 0.2 seconds.
+Chain 2 Iteration: 1000 / 3000 [ 33%]  (Warmup) 
+Chain 2 Iteration: 1001 / 3000 [ 33%]  (Sampling) 
+Chain 2 Iteration: 1100 / 3000 [ 36%]  (Sampling) 
+Chain 2 Iteration: 1200 / 3000 [ 40%]  (Sampling) 
+Chain 2 Iteration: 1300 / 3000 [ 43%]  (Sampling) 
+Chain 2 Iteration: 1400 / 3000 [ 46%]  (Sampling) 
+Chain 2 Iteration: 1500 / 3000 [ 50%]  (Sampling) 
+Chain 2 Iteration: 1600 / 3000 [ 53%]  (Sampling) 
+Chain 2 Iteration: 1700 / 3000 [ 56%]  (Sampling) 
+Chain 2 Iteration: 1800 / 3000 [ 60%]  (Sampling) 
+Chain 2 Iteration: 1900 / 3000 [ 63%]  (Sampling) 
+Chain 2 Iteration: 2000 / 3000 [ 66%]  (Sampling) 
+Chain 2 Iteration: 2100 / 3000 [ 70%]  (Sampling) 
+Chain 2 Iteration: 2200 / 3000 [ 73%]  (Sampling) 
+Chain 2 Iteration: 2300 / 3000 [ 76%]  (Sampling) 
+Chain 2 Iteration: 2400 / 3000 [ 80%]  (Sampling) 
+Chain 2 Iteration: 2500 / 3000 [ 83%]  (Sampling) 
+Chain 2 Iteration: 2600 / 3000 [ 86%]  (Sampling) 
+Chain 2 Iteration: 2700 / 3000 [ 90%]  (Sampling) 
+Chain 2 Iteration: 2800 / 3000 [ 93%]  (Sampling) 
+Chain 2 Iteration: 2900 / 3000 [ 96%]  (Sampling) 
+Chain 2 Iteration: 3000 / 3000 [100%]  (Sampling) 
+Chain 2 finished in 0.2 seconds.
+Chain 3 finished in 0.0 seconds.
+Chain 4 Iteration:  300 / 3000 [ 10%]  (Warmup) 
+Chain 4 Iteration:  400 / 3000 [ 13%]  (Warmup) 
+Chain 4 Iteration:  500 / 3000 [ 16%]  (Warmup) 
+Chain 4 Iteration:  600 / 3000 [ 20%]  (Warmup) 
+Chain 4 Iteration:  700 / 3000 [ 23%]  (Warmup) 
+Chain 4 Iteration:  800 / 3000 [ 26%]  (Warmup) 
+Chain 4 Iteration:  900 / 3000 [ 30%]  (Warmup) 
+Chain 4 Iteration: 1000 / 3000 [ 33%]  (Warmup) 
+Chain 4 Iteration: 1001 / 3000 [ 33%]  (Sampling) 
+Chain 4 Iteration: 1100 / 3000 [ 36%]  (Sampling) 
+Chain 4 Iteration: 1200 / 3000 [ 40%]  (Sampling) 
+Chain 4 Iteration: 1300 / 3000 [ 43%]  (Sampling) 
+Chain 4 Iteration: 1400 / 3000 [ 46%]  (Sampling) 
+Chain 4 Iteration: 1500 / 3000 [ 50%]  (Sampling) 
+Chain 4 Iteration: 1600 / 3000 [ 53%]  (Sampling) 
+Chain 4 Iteration: 1700 / 3000 [ 56%]  (Sampling) 
+Chain 4 Iteration: 1800 / 3000 [ 60%]  (Sampling) 
+Chain 4 Iteration: 1900 / 3000 [ 63%]  (Sampling) 
+Chain 4 Iteration: 2000 / 3000 [ 66%]  (Sampling) 
+Chain 4 Iteration: 2100 / 3000 [ 70%]  (Sampling) 
+Chain 4 Iteration: 2200 / 3000 [ 73%]  (Sampling) 
+Chain 4 Iteration: 2300 / 3000 [ 76%]  (Sampling) 
+Chain 4 Iteration: 2400 / 3000 [ 80%]  (Sampling) 
+Chain 4 Iteration: 2500 / 3000 [ 83%]  (Sampling) 
+Chain 4 Iteration: 2600 / 3000 [ 86%]  (Sampling) 
+Chain 4 Iteration: 2700 / 3000 [ 90%]  (Sampling) 
+Chain 4 Iteration: 2800 / 3000 [ 93%]  (Sampling) 
+Chain 4 Iteration: 2900 / 3000 [ 96%]  (Sampling) 
+Chain 4 Iteration: 3000 / 3000 [100%]  (Sampling) 
+Chain 4 finished in 0.2 seconds.
+
+All 4 chains finished successfully.
+Mean chain execution time: 0.1 seconds.
+Total execution time: 0.3 seconds.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># muestras</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>theta_samples <span class="ot">&lt;-</span> fit_b<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"theta"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>theta_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(theta_samples)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>theta_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> <span class="fu">as.vector</span>(theta_samples))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar la distribución de las muestras de theta</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(theta_df, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">bins =</span> <span class="dv">20</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> theta_mean, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución Posterior con Distribución Inicial Normal(0.6,0.0016)"</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Tasa de Créditos Otorgados (theta)"</span>) <span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="lauro_reyes_parcial_1_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fit_b<span class="sc">$</span><span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 10
+  variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
+  &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 lp__     -71.0   -70.8   0.691  0.300  -72.5   -70.5    1.00    3615.    5071.
+2 theta      0.561   0.561 0.0306 0.0303   0.511   0.612  1.00    3098.    4043.</code></pre>
+</div>
+</div>
+<p><strong>c)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span><span class="er">/</span> ejercicio_1_e_c.stan</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>data {</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  int<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span><span class="sc">&gt;</span> n_obs;</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  int<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span><span class="sc">&gt;</span> n_success;</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>parameters {</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  real<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span>, upper<span class="ot">=</span><span class="dv">1</span><span class="sc">&gt;</span> theta;</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>model {</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Distribución a priori</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  theta <span class="sc">~</span> <span class="fu">uniform</span>(<span class="dv">0</span>, <span class="dv">1</span>);</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Distribución de los datos observados</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  n_success <span class="sc">~</span> <span class="fu">binomial</span>(n_obs, theta);</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>file_model <span class="ot">&lt;-</span> <span class="st">"models/ejercicio_1_e_c.stan"</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(file_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in readLines(stan_file): incomplete final line found on
+'models/ejercicio_1_e_c.stan'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># datos</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_obs =</span> <span class="dv">100</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_success =</span> <span class="dv">50</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>fit_c <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_list,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">4</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>,</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Running MCMC with 4 parallel chains...
 
@@ -512,39 +776,827 @@ All 4 chains finished successfully.
 Mean chain execution time: 0.0 seconds.
 Total execution time: 0.2 seconds.</code></pre>
 </div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># muestras</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>theta_samples <span class="ot">&lt;-</span> fit<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"theta"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>theta_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(theta_samples)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>theta_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> <span class="fu">as.vector</span>(theta_samples))</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar la distribución de las muestras de theta</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(theta_df, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">bins =</span> <span class="dv">20</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> theta_mean, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución Posterior con Distribución a priori Normal(0.6,0.0016)"</span>,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Tasa de Créditos Otorgados (theta)"</span>) <span class="sc">+</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># muestras</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>theta_samples <span class="ot">&lt;-</span> fit_c<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"theta"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>theta_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(theta_samples)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>theta_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> <span class="fu">as.vector</span>(theta_samples))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar la distribución de las muestras de theta</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(theta_df, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">bins =</span> <span class="dv">20</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> theta_mean, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución Posterior con Distribución Inicial Normal(0.6,0.0016)"</span>,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Tasa de Créditos Otorgados (theta)"</span>) <span class="sc">+</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lauro_reyes_parcial_1_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="lauro_reyes_parcial_1_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fit_c<span class="sc">$</span><span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 10
+  variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
+  &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 lp__     -71.2   -70.9   0.729  0.317  -72.8   -70.7    1.00    3517.    3541.
+2 theta      0.500   0.501 0.0499 0.0500   0.417   0.582  1.00    3203.    3479.</code></pre>
+</div>
+</div>
+</section>
+<section id="f." class="level2">
+<h2 class="anchored" data-anchor-id="f.">f.</h2>
+<p>Estima el momio de otorgar un crédito, i.e., <span class="math inline">\(\phi = \frac{\theta}{1 - \theta'}\)</span> , usando las 3 distribuciones finales del inciso (d).</p>
+<p><strong>a)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>posterior_odds <span class="ot">&lt;-</span> fit_a<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"theta"</span>) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> fit_a<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"theta"</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">mean</span>(posterior_odds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.285164</code></pre>
+</div>
+</div>
+<p><strong>b)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>posterior_odds <span class="ot">&lt;-</span> fit_b<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"theta"</span>) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> fit_b<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"theta"</span>))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">mean</span>(posterior_odds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.288268</code></pre>
+</div>
+</div>
+<p><strong>c)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>posterior_odds <span class="ot">&lt;-</span> fit_c<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"theta"</span>) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> fit_c<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"theta"</span>))</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"Momio con distribución inicial C"</span>,<span class="fu">mean</span>(posterior_odds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in sprintf("Momio con distribución inicial C", mean(posterior_odds)):
+one argument not used by format 'Momio con distribución inicial C'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Momio con distribución inicial C"</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="ejercicio-2" class="level1">
+<h1>Ejercicio 2</h1>
+<p>Las utilidades mensuales de una compañía tienen una distribución <span class="math inline">\(N(\mu, \sigma^2)\)</span> (aquí se da la varianza, no la precisión). Suponer que una muestra de 10 meses de esta compañía dio como resultado las siguientes utilidades: (212, 207, 210, 196, 223, 193, 196, 210, 202, 221).</p>
+<section id="a.-1" class="level2">
+<h2 class="anchored" data-anchor-id="a.-1">a.</h2>
+<p>La incertidumbre sobre la utilidad promedio anual <span class="math inline">\(\mu\)</span> se puede representar por una distribución <span class="math inline">\(N(200, 40)\)</span>, y la incertidumbre de la desviación estándar de las utilidades mensuales se puede representar mediante una distribución <span class="math inline">\(G(10,1)\)</span>. Mediante la distribución posterior estima <span class="math inline">\(\mu\)</span> y <span class="math inline">\(\sigma^2\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span><span class="er">/</span> ejercicio_2_a.stan</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>data {</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  int<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span><span class="sc">&gt;</span> N;</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  real y[N];</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>parameters {</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  real mu;</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  real<span class="sc">&lt;</span>lower<span class="ot">=</span><span class="dv">0</span><span class="sc">&gt;</span> sigma;</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>model {</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Priors</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  mu <span class="sc">~</span> <span class="fu">normal</span>(<span class="dv">200</span>, <span class="dv">40</span>);</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  sigma <span class="sc">~</span> <span class="fu">gamma</span>(<span class="dv">10</span>, <span class="dv">1</span>);</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Likelihood</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  y <span class="sc">~</span> <span class="fu">normal</span>(mu, sigma);</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fit<span class="sc">$</span><span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">212</span>, <span class="dv">207</span>, <span class="dv">210</span>, <span class="dv">196</span>, <span class="dv">223</span>, <span class="dv">193</span>, <span class="dv">196</span>, <span class="dv">210</span>, <span class="dv">202</span>, <span class="dv">221</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(data), <span class="at">y =</span> data)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>file_model <span class="ot">&lt;-</span> <span class="st">'models/ejercicio_2_a.stan'</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(file_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in readLines(stan_file): incomplete final line found on
+'models/ejercicio_2_a.stan'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> model<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_list,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">4</span>,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>,</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 10
-  variable     mean  median      sd     mad      q5     q95  rhat ess_bulk
-  &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__      -74.1   -73.8   0.693   0.311   -75.4   -73.6    1.00    3949.
-2 theta_raw   0.578   0.579 0.0389  0.0394    0.514   0.641  1.00    2976.
-3 theta       0.641   0.641 0.00896 0.00907   0.626   0.655  1.00    2976.
-# ℹ 1 more variable: ess_tail &lt;dbl&gt;</code></pre>
+<pre><code>Running MCMC with 4 parallel chains...
+
+Chain 1 Iteration:    1 / 3000 [  0%]  (Warmup) 
+Chain 1 Iteration:  100 / 3000 [  3%]  (Warmup) 
+Chain 1 Iteration:  200 / 3000 [  6%]  (Warmup) 
+Chain 1 Iteration:  300 / 3000 [ 10%]  (Warmup) 
+Chain 1 Iteration:  400 / 3000 [ 13%]  (Warmup) 
+Chain 1 Iteration:  500 / 3000 [ 16%]  (Warmup) 
+Chain 1 Iteration:  600 / 3000 [ 20%]  (Warmup) 
+Chain 1 Iteration:  700 / 3000 [ 23%]  (Warmup) 
+Chain 1 Iteration:  800 / 3000 [ 26%]  (Warmup) 
+Chain 1 Iteration:  900 / 3000 [ 30%]  (Warmup) 
+Chain 1 Iteration: 1000 / 3000 [ 33%]  (Warmup) 
+Chain 1 Iteration: 1001 / 3000 [ 33%]  (Sampling) 
+Chain 1 Iteration: 1100 / 3000 [ 36%]  (Sampling) 
+Chain 1 Iteration: 1200 / 3000 [ 40%]  (Sampling) 
+Chain 1 Iteration: 1300 / 3000 [ 43%]  (Sampling) 
+Chain 1 Iteration: 1400 / 3000 [ 46%]  (Sampling) 
+Chain 1 Iteration: 1500 / 3000 [ 50%]  (Sampling) 
+Chain 1 Iteration: 1600 / 3000 [ 53%]  (Sampling) 
+Chain 1 Iteration: 1700 / 3000 [ 56%]  (Sampling) 
+Chain 1 Iteration: 1800 / 3000 [ 60%]  (Sampling) 
+Chain 1 Iteration: 1900 / 3000 [ 63%]  (Sampling) 
+Chain 1 Iteration: 2000 / 3000 [ 66%]  (Sampling) 
+Chain 1 Iteration: 2100 / 3000 [ 70%]  (Sampling) 
+Chain 1 Iteration: 2200 / 3000 [ 73%]  (Sampling) 
+Chain 1 Iteration: 2300 / 3000 [ 76%]  (Sampling) 
+Chain 1 Iteration: 2400 / 3000 [ 80%]  (Sampling) 
+Chain 1 Iteration: 2500 / 3000 [ 83%]  (Sampling) 
+Chain 1 Iteration: 2600 / 3000 [ 86%]  (Sampling) 
+Chain 1 Iteration: 2700 / 3000 [ 90%]  (Sampling) 
+Chain 1 Iteration: 2800 / 3000 [ 93%]  (Sampling) 
+Chain 1 Iteration: 2900 / 3000 [ 96%]  (Sampling) 
+Chain 1 Iteration: 3000 / 3000 [100%]  (Sampling) </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Chain 2 Iteration:    1 / 3000 [  0%]  (Warmup) 
+Chain 2 Iteration:  100 / 3000 [  3%]  (Warmup) 
+Chain 2 Iteration:  200 / 3000 [  6%]  (Warmup) 
+Chain 2 Iteration:  300 / 3000 [ 10%]  (Warmup) 
+Chain 2 Iteration:  400 / 3000 [ 13%]  (Warmup) 
+Chain 2 Iteration:  500 / 3000 [ 16%]  (Warmup) 
+Chain 2 Iteration:  600 / 3000 [ 20%]  (Warmup) 
+Chain 2 Iteration:  700 / 3000 [ 23%]  (Warmup) 
+Chain 2 Iteration:  800 / 3000 [ 26%]  (Warmup) 
+Chain 2 Iteration:  900 / 3000 [ 30%]  (Warmup) 
+Chain 2 Iteration: 1000 / 3000 [ 33%]  (Warmup) 
+Chain 2 Iteration: 1001 / 3000 [ 33%]  (Sampling) 
+Chain 2 Iteration: 1100 / 3000 [ 36%]  (Sampling) 
+Chain 2 Iteration: 1200 / 3000 [ 40%]  (Sampling) 
+Chain 2 Iteration: 1300 / 3000 [ 43%]  (Sampling) 
+Chain 2 Iteration: 1400 / 3000 [ 46%]  (Sampling) 
+Chain 2 Iteration: 1500 / 3000 [ 50%]  (Sampling) 
+Chain 2 Iteration: 1600 / 3000 [ 53%]  (Sampling) 
+Chain 2 Iteration: 1700 / 3000 [ 56%]  (Sampling) 
+Chain 2 Iteration: 1800 / 3000 [ 60%]  (Sampling) 
+Chain 2 Iteration: 1900 / 3000 [ 63%]  (Sampling) 
+Chain 2 Iteration: 2000 / 3000 [ 66%]  (Sampling) 
+Chain 2 Iteration: 2100 / 3000 [ 70%]  (Sampling) 
+Chain 2 Iteration: 2200 / 3000 [ 73%]  (Sampling) 
+Chain 2 Iteration: 2300 / 3000 [ 76%]  (Sampling) 
+Chain 2 Iteration: 2400 / 3000 [ 80%]  (Sampling) 
+Chain 2 Iteration: 2500 / 3000 [ 83%]  (Sampling) 
+Chain 2 Iteration: 2600 / 3000 [ 86%]  (Sampling) 
+Chain 2 Iteration: 2700 / 3000 [ 90%]  (Sampling) 
+Chain 2 Iteration: 2800 / 3000 [ 93%]  (Sampling) 
+Chain 2 Iteration: 2900 / 3000 [ 96%]  (Sampling) 
+Chain 2 Iteration: 3000 / 3000 [100%]  (Sampling) </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Chain 3 Iteration:    1 / 3000 [  0%]  (Warmup) 
+Chain 3 Iteration:  100 / 3000 [  3%]  (Warmup) 
+Chain 3 Iteration:  200 / 3000 [  6%]  (Warmup) 
+Chain 3 Iteration:  300 / 3000 [ 10%]  (Warmup) 
+Chain 3 Iteration:  400 / 3000 [ 13%]  (Warmup) 
+Chain 3 Iteration:  500 / 3000 [ 16%]  (Warmup) 
+Chain 3 Iteration:  600 / 3000 [ 20%]  (Warmup) 
+Chain 3 Iteration:  700 / 3000 [ 23%]  (Warmup) 
+Chain 3 Iteration:  800 / 3000 [ 26%]  (Warmup) 
+Chain 3 Iteration:  900 / 3000 [ 30%]  (Warmup) 
+Chain 3 Iteration: 1000 / 3000 [ 33%]  (Warmup) 
+Chain 3 Iteration: 1001 / 3000 [ 33%]  (Sampling) 
+Chain 3 Iteration: 1100 / 3000 [ 36%]  (Sampling) 
+Chain 3 Iteration: 1200 / 3000 [ 40%]  (Sampling) 
+Chain 3 Iteration: 1300 / 3000 [ 43%]  (Sampling) 
+Chain 3 Iteration: 1400 / 3000 [ 46%]  (Sampling) 
+Chain 3 Iteration: 1500 / 3000 [ 50%]  (Sampling) 
+Chain 3 Iteration: 1600 / 3000 [ 53%]  (Sampling) 
+Chain 3 Iteration: 1700 / 3000 [ 56%]  (Sampling) 
+Chain 3 Iteration: 1800 / 3000 [ 60%]  (Sampling) 
+Chain 3 Iteration: 1900 / 3000 [ 63%]  (Sampling) 
+Chain 3 Iteration: 2000 / 3000 [ 66%]  (Sampling) 
+Chain 3 Iteration: 2100 / 3000 [ 70%]  (Sampling) 
+Chain 3 Iteration: 2200 / 3000 [ 73%]  (Sampling) 
+Chain 3 Iteration: 2300 / 3000 [ 76%]  (Sampling) 
+Chain 3 Iteration: 2400 / 3000 [ 80%]  (Sampling) 
+Chain 3 Iteration: 2500 / 3000 [ 83%]  (Sampling) 
+Chain 3 Iteration: 2600 / 3000 [ 86%]  (Sampling) 
+Chain 3 Iteration: 2700 / 3000 [ 90%]  (Sampling) 
+Chain 3 Iteration: 2800 / 3000 [ 93%]  (Sampling) 
+Chain 3 Iteration: 2900 / 3000 [ 96%]  (Sampling) 
+Chain 3 Iteration: 3000 / 3000 [100%]  (Sampling) </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Chain 4 Iteration:    1 / 3000 [  0%]  (Warmup) 
+Chain 4 Iteration:  100 / 3000 [  3%]  (Warmup) 
+Chain 4 Iteration:  200 / 3000 [  6%]  (Warmup) 
+Chain 4 Iteration:  300 / 3000 [ 10%]  (Warmup) 
+Chain 4 Iteration:  400 / 3000 [ 13%]  (Warmup) 
+Chain 4 Iteration:  500 / 3000 [ 16%]  (Warmup) 
+Chain 4 Iteration:  600 / 3000 [ 20%]  (Warmup) 
+Chain 4 Iteration:  700 / 3000 [ 23%]  (Warmup) 
+Chain 4 Iteration:  800 / 3000 [ 26%]  (Warmup) 
+Chain 4 Iteration:  900 / 3000 [ 30%]  (Warmup) 
+Chain 4 Iteration: 1000 / 3000 [ 33%]  (Warmup) 
+Chain 4 Iteration: 1001 / 3000 [ 33%]  (Sampling) 
+Chain 4 Iteration: 1100 / 3000 [ 36%]  (Sampling) 
+Chain 4 Iteration: 1200 / 3000 [ 40%]  (Sampling) 
+Chain 4 Iteration: 1300 / 3000 [ 43%]  (Sampling) 
+Chain 4 Iteration: 1400 / 3000 [ 46%]  (Sampling) 
+Chain 4 Iteration: 1500 / 3000 [ 50%]  (Sampling) 
+Chain 4 Iteration: 1600 / 3000 [ 53%]  (Sampling) 
+Chain 4 Iteration: 1700 / 3000 [ 56%]  (Sampling) 
+Chain 4 Iteration: 1800 / 3000 [ 60%]  (Sampling) 
+Chain 4 Iteration: 1900 / 3000 [ 63%]  (Sampling) 
+Chain 4 Iteration: 2000 / 3000 [ 66%]  (Sampling) 
+Chain 4 Iteration: 2100 / 3000 [ 70%]  (Sampling) 
+Chain 4 Iteration: 2200 / 3000 [ 73%]  (Sampling) 
+Chain 4 Iteration: 2300 / 3000 [ 76%]  (Sampling) 
+Chain 4 Iteration: 2400 / 3000 [ 80%]  (Sampling) 
+Chain 4 Iteration: 2500 / 3000 [ 83%]  (Sampling) 
+Chain 4 Iteration: 2600 / 3000 [ 86%]  (Sampling) 
+Chain 4 Iteration: 2700 / 3000 [ 90%]  (Sampling) 
+Chain 4 Iteration: 2800 / 3000 [ 93%]  (Sampling) 
+Chain 4 Iteration: 2900 / 3000 [ 96%]  (Sampling) 
+Chain 4 Iteration: 3000 / 3000 [100%]  (Sampling) </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/var/folders/x3/914g3z3n6p375ndfhpljnmhm0000gq/T/RtmpvtFT4q/model-1b93423b8583.stan', line 13, column 2 to column 23)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 4 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Chain 1 finished in 0.0 seconds.
+Chain 2 finished in 0.0 seconds.
+Chain 3 finished in 0.0 seconds.
+Chain 4 finished in 0.0 seconds.
+
+All 4 chains finished successfully.
+Mean chain execution time: 0.0 seconds.
+Total execution time: 0.2 seconds.</code></pre>
 </div>
 </div>
-<ol start="6" type="a">
-<li>Estima el momio de otorgar un crédito, i.e., <span class="math inline">\(\phi = \frac{\theta}{1 - \theta'}\)</span> , usando las 3 distribuciones finales del inciso (d).</li>
-</ol>
+<p>##b. Utilizando una distribución inicial no informativa, estima mediante la correspondiente distribución inicial <span class="math inline">\(\mu\)</span> y <span class="math inline">\(\sigma^2\)</span>.</p>
+</section>
 </section>
 
 </main>

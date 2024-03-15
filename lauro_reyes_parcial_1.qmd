@@ -17,7 +17,9 @@ library(ggplot2)
 
 Sea θ la tasa de créditos hipotecarios otorgados por un banco en Argentina. Durante el 2023 la tasa promedio fue de 60 % y la desviación estándar de la tasa fue de 0.04. En lo que va del año 2024 se han solicitado 100 créditos, de los cuales se han otorgado únicamente 50.
 
-## a. Usando la información del año pasado, encuentra la distribución beta que mejor describe el conocimiento inicial.
+## 1.a.
+
+Usando la información del año pasado, encuentra la distribución beta que mejor describe el conocimiento inicial.
 
 ```{r}
 # función a optimizar
@@ -47,7 +49,9 @@ ggplot(data = data.frame(x = x, y = dbeta(x, beta_estimate$par[1], beta_estimate
   theme_minimal()
 ```
 
-## b. Usando la información del año pasado,encuentra la distribución normal transformada que mejor describa el conocimiento inicial.
+## 1.b.
+
+Usando la información del año pasado,encuentra la distribución normal transformada que mejor describa el conocimiento inicial.
 
 ```{r}
 ggplot(data = data.frame(x = x, y = dnorm(x, mean_2023,sqrt(var_2023))), 
@@ -57,7 +61,9 @@ ggplot(data = data.frame(x = x, y = dnorm(x, mean_2023,sqrt(var_2023))),
   theme_minimal()
 ```
 
-## c. Determina la distribución inicial de referencia.
+## 1.c.
+
+Determina la distribución inicial de referencia.
 
 ```{r}
 y <- rep(1, 100)
@@ -67,13 +73,39 @@ ggplot(data = data.frame(x = x, y = y), aes(x = x, y = y)) +
   theme_minimal()
 ```
 
-## d. Usando los datos del año 2024 encuentra la distribución final para cada una de las distribuciones iniciales de los incisos (a) – (c).
+## 1.d.
 
-## e. Estima la tasa de créditos otorgados, usando las 3 distribuciones finales del inciso (d).
+Usando los datos del año 2024 encuentra la distribución final para cada una de las distribuciones iniciales de los incisos (a) – (c).
+
+## 1.e.
+
+Estima la tasa de créditos otorgados, usando las 3 distribuciones finales del inciso (d).
 
 **a)**
 
-```{r, warning=FALSE}
+```{r,eval=FALSE}
+// ejercicio_1_e_a.stan
+data {
+  int<lower=0> n_obs;
+  int<lower=0> n_success;
+  real<lower=0> alpha0; 
+  real<lower=0> beta0; 
+}
+
+parameters {
+  real<lower=0, upper=1> theta;
+}
+
+model {
+  // Distribución a priori
+  theta ~ beta(alpha0, beta0);
+
+  // Distribución de los datos observados
+  n_success ~ binomial(n_obs, theta);
+}
+```
+
+```{r, message = FALSE, warning = FALSE}
 file_model <- "models/ejercicio_1_e_a.stan"
 mod <- cmdstan_model(file_model)
 # datos
@@ -101,7 +133,7 @@ theta_df <- data.frame(theta = as.vector(theta_samples))
 ggplot(theta_df, aes(x = theta)) +
   geom_histogram(aes(y = ..density..), bins = 20, fill = "skyblue", color = "black") +
   geom_vline(xintercept = theta_mean, color = "red", linetype = "dashed", size = 1) +
-  labs(title = "Distribución Posterior con Distribución a priori Beta(90,60)",
+  labs(title = "Distribución Posterior con Distribución Inicial Beta(90,60)",
        x = "Tasa de Créditos Otorgados (theta)") +
   theme_minimal()
 ```
@@ -110,7 +142,29 @@ ggplot(theta_df, aes(x = theta)) +
 fit_a$summary()
 ```
 
-*b)*
+**b)**
+
+```{r,eval=FALSE}
+// ejercicio_1_e_b.stan
+data {
+  int<lower=0> n_obs;
+  int<lower=0> n_success;
+  real mean0;
+  real<lower=0> variance0;
+}
+
+parameters {
+  real theta;
+}
+
+model {
+  // Distribución a priori
+  theta ~ normal(mean0, sqrt(variance0));
+  
+  // Distribución de los datos observados
+  n_success ~ binomial(n_obs, theta);
+}
+```
 
 ```{r, warning=FALSE,message=FALSE}
 file_model <- "models/ejercicio_1_e_b.stan"
@@ -140,7 +194,7 @@ theta_df <- data.frame(theta = as.vector(theta_samples))
 ggplot(theta_df, aes(x = theta)) +
   geom_histogram(aes(y = ..density..), bins = 20, fill = "skyblue", color = "black") +
   geom_vline(xintercept = theta_mean, color = "red", linetype = "dashed", size = 1) +
-  labs(title = "Distribución Posterior con Distribución a priori Normal(0.6,0.0016)",
+  labs(title = "Distribución Posterior con Distribución Inicial Normal(0.6,0.0016)",
        x = "Tasa de Créditos Otorgados (theta)") +
   theme_minimal()
 ```
@@ -151,7 +205,25 @@ fit_b$summary()
 
 **c)**
 
-```{r}
+```{r,eval=FALSE}
+// ejercicio_1_e_c.stan
+data {
+  int<lower=0> n_obs;
+  int<lower=0> n_success;
+}
+parameters {
+  real<lower=0, upper=1> theta;
+}
+model {
+  // Distribución a priori
+  theta ~ uniform(0, 1);
+
+  // Distribución de los datos observados
+  n_success ~ binomial(n_obs, theta);
+}
+```
+
+```{r, message = FALSE, warning = FALSE}
 file_model <- "models/ejercicio_1_e_c.stan"
 mod <- cmdstan_model(file_model)
 # datos
@@ -177,32 +249,80 @@ theta_df <- data.frame(theta = as.vector(theta_samples))
 ggplot(theta_df, aes(x = theta)) +
   geom_histogram(aes(y = ..density..), bins = 20, fill = "skyblue", color = "black") +
   geom_vline(xintercept = theta_mean, color = "red", linetype = "dashed", size = 1) +
-  labs(title = "Distribución Posterior con Distribución a priori Normal(0.6,0.0016)",
+  labs(title = "Distribución Posterior con Distribución Inicial Normal(0.6,0.0016)",
        x = "Tasa de Créditos Otorgados (theta)") +
   theme_minimal()
 
 fit_c$summary()
 ```
 
-## f. Estima el momio de otorgar un crédito, i.e., $\phi = \frac{\theta}{1 - \theta'}$ , usando las 3 distribuciones finales del inciso (d).
+## f.
+
+Estima el momio de otorgar un crédito, i.e., $\phi = \frac{\theta}{1 - \theta'}$ , usando las 3 distribuciones finales del inciso (d).
 
 **a)**
 
 ```{r}
 posterior_odds <- fit_a$draws(variables = "theta") / (1 - fit_a$draws(variables = "theta"))
-print(mean(posterior_odds))
+sprintf("Momio de la distribución inicial (a): %.2f",mean(posterior_odds))
 ```
 
 **b)**
 
 ```{r}
 posterior_odds <- fit_b$draws(variables = "theta") / (1 - fit_b$draws(variables = "theta"))
-print(mean(posterior_odds))
+sprintf("Momio de la distribución inicial (b): %.2f",mean(posterior_odds))
 ```
 
 **c)**
 
 ```{r}
 posterior_odds <- fit_c$draws(variables = "theta") / (1 - fit_c$draws(variables = "theta"))
-print(mean(posterior_odds))
+sprintf("Momio de la distribución inicial (c): %.2f",mean(posterior_odds))
 ```
+
+# Ejercicio 2
+
+Las utilidades mensuales de una compañía tienen una distribución $N(\mu, \sigma^2)$ (aquí se da la varianza, no la precisión). Suponer que una muestra de 10 meses de esta compañía dio como resultado las siguientes utilidades: (212, 207, 210, 196, 223, 193, 196, 210, 202, 221).
+
+## a.
+
+La incertidumbre sobre la utilidad promedio anual $\mu$ se puede representar por una distribución $N(200, 40)$, y la incertidumbre de la desviación estándar de las utilidades mensuales se puede representar mediante una distribución $G(10,1)$. Mediante la distribución posterior estima $\mu$ y $\sigma^2$.
+
+```{r,eval=FALSE}
+// ejercicio_2_a.stan
+data {
+  int<lower=0> N;
+  real y[N];
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  // Priors
+  mu ~ normal(200, 40);
+  sigma ~ gamma(10, 1);
+
+  // Likelihood
+  y ~ normal(mu, sigma);
+}
+```
+
+```{r, message = FALSE, warning = FALSE}
+data <- c(212, 207, 210, 196, 223, 193, 196, 210, 202, 221)
+data_list <- list(N = length(data), y = data)
+file_model <- 'models/ejercicio_2_a.stan'
+model <- cmdstan_model(file_model)
+
+fit <- model$sample(
+  data = data_list,
+  seed = 4,
+  chains = 4,
+  parallel_chains = 4,
+  iter_sampling = 2000,
+  iter_warmup = 1000
+)
+```
+
+##b. Utilizando una distribución inicial no informativa, estima mediante la correspondiente distribución inicial $\mu$ y $\sigma^2$.
