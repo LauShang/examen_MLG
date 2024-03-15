@@ -54,4 +54,5 @@ rsconnect/
 *.ipynb
 files/
 .DS_Store
+models/
 >>>>>>> 481a825 (ignore)
