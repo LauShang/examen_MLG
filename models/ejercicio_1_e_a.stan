@@ -1,3 +1,5 @@
+
+// ejercicio_1_e_a.stan
 data {
   int<lower=0> n_obs;
   int<lower=0> n_success;
@@ -16,3 +18,4 @@ model {
   // verosimilitud
   n_success ~ binomial(n_obs, theta);
 }
+

@@ -1,3 +1,4 @@
+
 // ejercicio_2_a.stan
 data {
   int<lower=0> N;
@@ -15,3 +16,4 @@ model {
   // Likelihood
   y ~ normal(mu, sigma);
 }
+

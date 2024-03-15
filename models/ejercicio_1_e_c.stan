@@ -1,14 +1,17 @@
+
+// ejercicio_1_e_c.stan
 data {
-  int<lower=0> n_obs; // Número total de ensayos
-  int<lower=0> n_success; // Número total de éxitos observados
+  int<lower=0> n_obs;
+  int<lower=0> n_success;
 }
 parameters {
-  real<lower=0, upper=1> theta; // Probabilidad de éxito
+  real<lower=0, upper=1> theta;
 }
 model {
-  // Prior
+  // Distribución a priori
   theta ~ uniform(0, 1);
 
-  // Likelihood
+  // Distribución de los datos observados
   n_success ~ binomial(n_obs, theta);
 }
+

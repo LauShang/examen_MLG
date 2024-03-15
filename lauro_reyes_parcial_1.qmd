@@ -11,13 +11,14 @@ output:
 library(dplyr)
 library(cmdstanr)
 library(ggplot2)
+library(bayesplot)
 ```
 
 # Ejercicio 1
 
 Sea θ la tasa de créditos hipotecarios otorgados por un banco en Argentina. Durante el 2023 la tasa promedio fue de 60 % y la desviación estándar de la tasa fue de 0.04. En lo que va del año 2024 se han solicitado 100 créditos, de los cuales se han otorgado únicamente 50.
 
-## 1.a.
+## 1.a
 
 Usando la información del año pasado, encuentra la distribución beta que mejor describe el conocimiento inicial.
 
@@ -49,7 +50,7 @@ ggplot(data = data.frame(x = x, y = dbeta(x, beta_estimate$par[1], beta_estimate
   theme_minimal()
 ```
 
-## 1.b.
+## 1.b
 
 Usando la información del año pasado,encuentra la distribución normal transformada que mejor describa el conocimiento inicial.
 
@@ -61,29 +62,40 @@ ggplot(data = data.frame(x = x, y = dnorm(x, mean_2023,sqrt(var_2023))),
   theme_minimal()
 ```
 
-## 1.c.
+## 1.c
 
 Determina la distribución inicial de referencia.
 
 ```{r}
-y <- rep(1, 100)
+y <- dbeta(x,1,1)
 ggplot(data = data.frame(x = x, y = y), aes(x = x, y = y)) +
   geom_line() +
   labs(x = "", y = "", title = "Distribución no informativa") +
   theme_minimal()
 ```
 
-## 1.d.
+## 1.d
 
 Usando los datos del año 2024 encuentra la distribución final para cada una de las distribuciones iniciales de los incisos (a) – (c).
 
-## 1.e.
+### 1.d.a
+
+$$Beta(140,110)$$
+### 1.d.b
+
+### 1.d.c
+
+$$Beta(51,51)$$
+
+
+## 1.e
 
 Estima la tasa de créditos otorgados, usando las 3 distribuciones finales del inciso (d).
 
 **a)**
 
-```{r,eval=FALSE}
+```{r, message = FALSE, warning = FALSE}
+model_code <- '
 // ejercicio_1_e_a.stan
 data {
   int<lower=0> n_obs;
@@ -97,17 +109,17 @@ parameters {
 }
 
 model {
-  // Distribución a priori
+  // inicial
   theta ~ beta(alpha0, beta0);
 
-  // Distribución de los datos observados
+  // verosimilitud
   n_success ~ binomial(n_obs, theta);
 }
-```
+'
+stan_model_path <- "models/ejercicio_1_e_a.stan"
+writeLines(model_code, stan_model_path)
 
-```{r, message = FALSE, warning = FALSE}
-file_model <- "models/ejercicio_1_e_a.stan"
-mod <- cmdstan_model(file_model)
+mod <- cmdstan_model(stan_model_path)
 # datos
 data_list <- list(
   n_obs = 100,
@@ -119,10 +131,7 @@ data_list <- list(
 fit_a <- mod$sample(
   data = data_list,
   seed = 4,
-  chains = 4,
-  parallel_chains = 4,
-  iter_sampling = 2000,
-  iter_warmup = 1000
+  chains = 4
 )
 # muestras
 theta_samples <- fit_a$draws(variables = "theta")
@@ -144,7 +153,8 @@ fit_a$summary()
 
 **b)**
 
-```{r,eval=FALSE}
+```{r, warning=FALSE,message=FALSE}
+model_code <- '
 // ejercicio_1_e_b.stan
 data {
   int<lower=0> n_obs;
@@ -164,11 +174,11 @@ model {
   // Distribución de los datos observados
   n_success ~ binomial(n_obs, theta);
 }
-```
+'
+stan_model_path <- "models/ejercicio_1_e_b.stan"
+writeLines(model_code, stan_model_path)
 
-```{r, warning=FALSE,message=FALSE}
-file_model <- "models/ejercicio_1_e_b.stan"
-mod <- cmdstan_model(file_model)
+mod <- cmdstan_model(stan_model_path)
 # datos
 data_list <- list(
   n_obs = 100,
@@ -181,9 +191,7 @@ fit_b <- mod$sample(
   data = data_list,
   seed = 4,
   chains = 4,
-  parallel_chains = 4,
-  iter_sampling = 2000,
-  iter_warmup = 1000
+  parallel_chains = 4
 )
 # muestras
 theta_samples <- fit_b$draws(variables = "theta")
@@ -205,7 +213,8 @@ fit_b$summary()
 
 **c)**
 
-```{r,eval=FALSE}
+```{r, message = FALSE, warning = FALSE}
+model_code <- '
 // ejercicio_1_e_c.stan
 data {
   int<lower=0> n_obs;
@@ -221,11 +230,11 @@ model {
   // Distribución de los datos observados
   n_success ~ binomial(n_obs, theta);
 }
-```
+'
+stan_model_path <- "models/ejercicio_1_e_c.stan"
+writeLines(model_code, stan_model_path)
 
-```{r, message = FALSE, warning = FALSE}
-file_model <- "models/ejercicio_1_e_c.stan"
-mod <- cmdstan_model(file_model)
+mod <- cmdstan_model(stan_model_path)
 # datos
 data_list <- list(
   n_obs = 100,
@@ -236,9 +245,7 @@ fit_c <- mod$sample(
   data = data_list,
   seed = 4,
   chains = 4,
-  parallel_chains = 4,
-  iter_sampling = 2000,
-  iter_warmup = 1000
+  parallel_chains = 4
 )
 # muestras
 theta_samples <- fit_c$draws(variables = "theta")
@@ -256,7 +263,7 @@ ggplot(theta_df, aes(x = theta)) +
 fit_c$summary()
 ```
 
-## f.
+## 1.f
 
 Estima el momio de otorgar un crédito, i.e., $\phi = \frac{\theta}{1 - \theta'}$ , usando las 3 distribuciones finales del inciso (d).
 
@@ -285,15 +292,19 @@ sprintf("Momio de la distribución inicial (c): %.2f",mean(posterior_odds))
 
 Las utilidades mensuales de una compañía tienen una distribución $N(\mu, \sigma^2)$ (aquí se da la varianza, no la precisión). Suponer que una muestra de 10 meses de esta compañía dio como resultado las siguientes utilidades: (212, 207, 210, 196, 223, 193, 196, 210, 202, 221).
 
-## a.
+## 2.a
 
 La incertidumbre sobre la utilidad promedio anual $\mu$ se puede representar por una distribución $N(200, 40)$, y la incertidumbre de la desviación estándar de las utilidades mensuales se puede representar mediante una distribución $G(10,1)$. Mediante la distribución posterior estima $\mu$ y $\sigma^2$.
 
-```{r,eval=FALSE}
+```{r, message = FALSE, warning = FALSE}
+data <- c(212, 207, 210, 196, 223, 193, 196, 210, 202, 221)
+data_list <- list(N = length(data), y = data)
+
+model_code <- '
 // ejercicio_2_a.stan
 data {
   int<lower=0> N;
-  real y[N];
+  vector[N] y;
 }
 parameters {
   real mu;
@@ -307,22 +318,285 @@ model {
   // Likelihood
   y ~ normal(mu, sigma);
 }
-```
+'
+stan_model_path <- "models/ejercicio_2_a.stan"
+writeLines(model_code, stan_model_path)
 
-```{r, message = FALSE, warning = FALSE}
-data <- c(212, 207, 210, 196, 223, 193, 196, 210, 202, 221)
-data_list <- list(N = length(data), y = data)
-file_model <- 'models/ejercicio_2_a.stan'
-model <- cmdstan_model(file_model)
+model <- cmdstan_model(stan_model_path)
 
 fit <- model$sample(
   data = data_list,
   seed = 4,
   chains = 4,
-  parallel_chains = 4,
-  iter_sampling = 2000,
-  iter_warmup = 1000
+  parallel_chains = 4
 )
 ```
 
-##b. Utilizando una distribución inicial no informativa, estima mediante la correspondiente distribución inicial $\mu$ y $\sigma^2$.
+```{r}
+mcmc_combo(fit$draws(), pars = c("mu", "sigma"))
+```
+
+```{r}
+mu_post <- mean(fit$draws(variables = "mu"))
+sigma_post <- mean(fit$draws(variables = "sigma"))
+sprintf("Estimadores de mu y sigma son %.2f y %2.f",mu_post,sigma_post)
+```
+
+## 2.b
+
+Utilizando una distribución inicial no informativa, estima mediante la correspondiente distribución inicial $\mu$ y $\sigma^2$.
+
+```{r, message=FALSE,warning=FALSE}
+data_list <- list(N = length(data), y = data)
+
+model_code <- '
+// ejercicio_2_b.stan
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  // Likelihood
+  y ~ normal(mu, sigma);
+}
+'
+stan_model_path <- "models/ejercicio_2_b.stan"
+writeLines(model_code, stan_model_path)
+
+model <- cmdstan_model(stan_model_path)
+
+fit_b <- model$sample(
+  data = data_list,
+  seed = 4,
+  chains = 4,
+  parallel_chains = 4
+)
+```
+
+```{r}
+mcmc_combo(fit_b$draws(), pars = c("mu", "sigma"))
+mu_post <- mean(fit_b$draws(variables = "mu"))
+sigma_post <- mean(fit_b$draws(variables = "sigma"))
+sprintf("Estimadores de mu y sigma son %.2f y %.2f",mu_post,sigma_post)
+```
+
+# Ejercicio 3
+
+A continuación se presenta una base de datos de calificaciones de 20 empresas financieras hechas por las dos compañías calificadores más importantes S&P y Moody’s (ver el archivo `calificaciones.txt`) Realiza un análisis Bayesiano completo de los datos, ajustando un modelo de regresión lineal, tomando como variable respuesta las calificaciones de S&P y como variable explicativa las calificaciones de Moody’s.
+
+```{r, message=FALSE, warning=FALSE}
+data <- read.table("datos/calificaciones.txt", header = TRUE)
+head(data)
+summary(data)
+
+data_list <- list(N = nrow(data), 
+                  MO = data$MO,
+                  SP = data$SP)
+
+model_code <- '
+// ejercicio_3.stan
+data {
+  int<lower=0> N;
+  vector[N] MO;
+  vector[N] SP;
+}
+
+parameters {
+  real intercept;
+  real slope;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[N] mu;
+  mu = intercept + slope * MO;
+}
+
+model {
+  intercept ~ normal(2.5, 1);
+  slope ~ normal(5, 1);
+  sigma ~ gamma(0.1, 0.1);
+  SP ~ normal(mu, sigma);
+}
+'
+stan_model_path <- "models/ejercicio_3.stan"
+writeLines(model_code, stan_model_path)
+
+model <- cmdstan_model(stan_model_path)
+
+fit <- model$sample(
+  data = data_list,
+  seed = 4,
+  chains = 4,
+  parallel_chains = 4
+)
+head(fit$summary())
+mcmc_combo(fit$draws(), pars = c("intercept", "slope", "sigma"))
+intercept_mean <- mean(fit$draws(variable = "intercept"))
+slope_mean <- mean(fit$draws(variable = "slope"))
+```
+
+**Ecuación general del modelo**
+
+$$SP = `r round(intercept_mean, 2)` + (MO) \times `r round(slope_mean, 2)`$$
+
+```{r}
+posterior_samples <- data.frame(
+  obs_id = integer(0),
+  SP = numeric(0),
+  mu = numeric(0)
+)
+# crear df con todas las muestras posteriores y su valor observado
+for(i in 1:nrow(data)) {
+  mu_samples <- as.vector(fit$draws(variable = paste0("mu[", i, "]")))
+  SP_rep <- rep(data$SP[i], length(mu_samples))
+  posterior_samples <- rbind(posterior_samples, data.frame(obs_id = i, SP = SP_rep, mu = mu_samples))
+}
+
+ggplot(posterior_samples, aes(x = obs_id, y = SP)) + 
+  geom_jitter(aes(y = mu), color = "lightblue", alpha = 0.4, width = 0.2) +
+  geom_point(color = "blue", size = 3, alpha = 0.6) +
+  labs(title = "Muestras Predictivas Posteriores vs Valor Observado", y = "SP", x = "") +
+  theme_minimal()
+```
+
+# Ejercicio 4
+
+Un investigador desea evaluar la relación entre el salario anual de trabajadores de una compañía de nivel medio y alto (Y , en miles de dólares) y el índice de calidad de trabajo ($X_1$), número de años de experiencia ($X_2$) y el índice de éxito en publicaciones ($X_3$). La muestra consiste de 24 trabajadores. Realiza un análisis Bayesiano completo de los datos y obtén las predicciones de salarios para 3 nuevos empleados con variables explicativas: $$x′_{1F} =(5,4,17,6,0),x′_{2F}=(6,2,12,5,8),x′_{3F} =(6,4,21,6,1) $$ Los datos se encuentran en el archivo `salarios.txt.`
+
+## 4.a
+
+```{r}
+data <- read.table("datos/salarios.txt", header = TRUE)
+head(data)
+summary(data)
+
+model_code <- '
+data {
+  int<lower=0> N;
+  int<lower=0> K;
+  matrix[N, K] X;
+  vector[N] Y;
+}
+parameters {
+  real intercept;
+  vector[K] betas;
+  real<lower=0> sigma;
+}
+transformed parameters {
+  vector[N] mu;
+  mu = intercept + X * betas;
+}
+model {
+  intercept ~ normal(0, 10);
+  betas ~ normal(10, 10);
+  sigma ~ gamma(2, 0.5);
+  
+  Y ~ normal(mu, sigma);  // Modelo de regresión
+}
+'
+stan_model_path <- "models/ejercicio_4.stan"
+writeLines(model_code, stan_model_path)
+
+# Compilar el modelo
+mod <- cmdstan_model(stan_model_path)
+
+# Preparar datos para Stan
+N <- nrow(data)
+K <- 3
+X <- as.matrix(data %>% select(-Y))
+Y <- data$Y
+
+data_list <- list(N = N, K = K, X = X, Y = Y)
+
+# Ajustar el modelo
+fit <- mod$sample(data = data_list, seed = 42, chains = 4)
+head(fit$summary())
+mcmc_combo(fit$draws(), pars = c("intercept", "betas[1]", "betas[2]", "betas[3]", "sigma"))
+```
+
+```{r}
+posterior_samples <- data.frame(
+  obs_id = integer(0),
+  Y = numeric(0),
+  mu = numeric(0)
+)
+# crear df con todas las muestras posteriores y su valor observado
+for(i in 1:nrow(data)) {
+  mu_samples <- as.vector(fit$draws(variable = paste0("mu[", i, "]")))
+  Y_rep <- rep(data$Y[i], length(mu_samples))
+  posterior_samples <- rbind(posterior_samples, data.frame(obs_id = i, Y = Y_rep, mu = mu_samples))
+}
+
+ggplot(posterior_samples, aes(x = obs_id, y = Y)) + 
+  geom_jitter(aes(y = mu), color = "lightblue", alpha = 0.4, width = 0.2) +
+  geom_point(color = "blue", size = 3, alpha = 0.6) +
+  labs(title = "Muestras Predictivas Posteriores vs Valor Observado", y = "Y", x = "") +
+  theme_minimal()
+```
+
+## 4.b
+
+```{r}
+new_salaries <- data.frame(
+  X1 = c(5, 4, 17, 6, 0),
+  X2 = c(6, 2, 12, 5, 8),
+  X3 = c(6, 4, 21, 6, 1)
+)
+X_new <- as.matrix(new_salaries)
+N_new <- nrow(new_salaries)
+K <- ncol(new_salaries)
+
+stan_data_new <- list(N = N_new, K = K, X = X_new)
+
+model_code <- '
+data {
+  int<lower=0> N;
+  int<lower=0> K;
+  matrix[N, K] X;
+}
+parameters {
+  real intercept;
+  vector[K] betas;
+  real<lower=0> sigma;
+}
+generated quantities {
+  vector[N] y_pred;
+  for (i in 1:N) {
+    y_pred[i] = normal_rng(intercept + dot_product(X[i], betas), sigma);
+  }
+}
+'
+stan_model_path <- "models/ejercicio_4_pred.stan"
+writeLines(model_code, stan_model_path)
+
+# Compilar el modelo
+mod <- cmdstan_model(stan_model_path)
+
+fit_pred <- mod$generate_quantities(
+  data = stan_data_new,
+  fitted_params = fit$draws(variables = c("intercept", "betas[1]", "betas[2]", "betas[3]", "sigma"))
+)
+
+y_pred <- fit_pred$draws("y_pred")
+
+# Calcular la media de las predicciones para cada observación, si es necesario
+mean_y_pred <- apply(y_pred, c(2, 3), mean)
+mean_y_pred
+```
+
+# Ejercicio 5
+
+Una compañía de seguros quiere lanzar un nuevo seguro médico para mineros. Para ello desea estimar la probabilidad de muerte ($\pi_i$), con base en el tiempo de exposición al mineral ($x_i$ en horas). Se cuenta con información de las muertes registradas entre 1950 y 1959, junto con el tiempo de exposición al mineral y el número de mineros expuestos. Realiza un análisis Bayesiano de los datos y obtén la distribución predictiva del número de muertes suponiendo que hay 100 mineros con un tiempo de exposición de 200 horas. Los datos se encuentran en el archivo `mortality.txt.`
+
+El modelo es el siguiente:
+
+Para $i = 1,...,N$ $$Y_i|\pi_i ∼ Bin(n_i, \pi_i)$$ $$logit(\pi_i) = \beta_0 + \beta_1x_i$$ con $\beta_0 ∼ N(0, 0,001)$ y $\beta_1 ∼ N(0, 0,001)$
+
+## 5.a
+
+En el mismo contexto del problema enunciado (que hicimos en la última clase), supongamos ahora que la compañía de seguros está interesada en modelar el número total de desastres ($Y_t$) que ocurren en la mina. Se cuenta con $N = 112$ observaciones durante los años 1851 a 1962. Se proponen tres modelos: \* i. Modelo con tasa variable en función del tiempo: $$Y_t|\mu_t ∼ Poi(\mu_t)$$ $$log(\mu_t) = β_0 + β_1x_t$$ con $β_0 ∼N(0, 0,001)$ y $β1 ∼ N(0, 0,001)$. \* ii. Modelo con tasa constante en dos períodos: Se cree que la tasa promedio de desastres es constante, pero que en el siglo XX la tasa ha disminuido. Esto se traduce en el siguiente modelo: $$Y_t\|μ_t ∼ Poi(μ_t)$$ $$log(μ_t) = β_0 + β_1I(t ≥ τ)$$ con $β_0 ∼ N(0,0,001)$ y $β1 ∼ N(0,0,001)$ y $\tau ∼ U{1,...,N}$.
